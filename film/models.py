@@ -1,24 +1,26 @@
 from django.contrib.auth.models import User
+from django.core.cache import cache
 from django.db import models
 from django.core.validators import MinValueValidator, MaxValueValidator
+from django.db.models import Avg
+from django.utils.timezone import now
 
 
 class Actors(models.Model):
-    actor_names = models.CharField(max_length=255, null=True)
+    actor_names = models.CharField(max_length=255, null=True, db_index=True)
     image_actors = models.URLField(null=True, blank=True)
     descrip_actors = models.TextField(null=True, blank=True)
 
     class Meta:
         verbose_name = 'Actor'
         verbose_name_plural = 'Actors'
-        ordering = ['?']
 
     def __str__(self):
         return self.actor_names
 
 
 class Movies(models.Model):
-    title = models.CharField(max_length=255, verbose_name='name')
+    title = models.CharField(max_length=255, verbose_name='name', db_index=True)
     description = models.TextField(null=True, blank=True)
     release_date = models.PositiveIntegerField(null=True, blank=True)
     image = models.URLField(null=True, blank=True)
@@ -34,7 +36,15 @@ class Movies(models.Model):
     class Meta:
         verbose_name = 'Film'
         verbose_name_plural = 'Films'
-        ordering = ['?']
+
+    def get_cached_avg_rating(movie):
+        cache_key = f'movie_{movie.id}_avg_rating'
+        avg_rating = cache.get(cache_key)
+        if avg_rating is None:
+            avg_rating = movie.ratings.aggregate(Avg('user_rate'))['user_rate__avg']
+            if avg_rating is not None:
+                cache.set(cache_key, avg_rating)
+        return avg_rating
 
     def __str__(self):
         return self.title
@@ -89,3 +99,20 @@ class MovieActor(models.Model):
         ordering = ['?']
 
 
+class Notification(models.Model):
+    INFORMATIVE = 'informative'
+    ATTENTION = 'attention'
+    CRITICAL = 'critical'
+    LEVEL_CHOICES = [
+        (INFORMATIVE, 'Informative'),
+        (ATTENTION, 'Attention'),
+        (CRITICAL, 'Critical'),
+    ]
+
+    recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name='notifications')
+    text = models.TextField()
+    level = models.CharField(max_length=12, choices=LEVEL_CHOICES, default=INFORMATIVE)
+    created_at = models.DateTimeField(default=now)
+
+    def __str__(self):
+        return f'Notification for {self.recipient.username}'

@@ -18,6 +18,8 @@ from film.models import Actors, MovieActor, Movies
 та requests для виконання HTTP-запитів. Дані отримуються з веб-сторінки IMDb, зберігаються у локальний HTML файл 
 і потім аналізуються для отримання деталей про фільми та зберігається в базі даних Django в моделях. 
 """
+
+
 def get_data(url):
     chromedriver_path = 'C:\\Users\\averb\\PycharmProjects\\djangoProject\\chromedriver.exe'
     options = Options()

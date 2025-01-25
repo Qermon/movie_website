@@ -1,3 +1,6 @@
+{% load socialaccount %}
+{% load static %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -85,6 +88,30 @@
         .login-container .signup-link a:hover {
             color: #00f2fe;
         }
+
+        .google-login-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: #db4437;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            width: 100%;
+            margin-top: 1rem;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+        }
+
+        .google-login-btn:hover {
+            background-color: #c1351d;
+        }
+
+        .google-login-btn img {
+            margin-right: 10px;
+        }
     </style>
 </head>
 <body>
@@ -95,10 +122,12 @@
             {{ form.as_p }}
             <button type="submit">Log In</button>
         </form>
+        <div class="google-login-btn">
+            <a href="{% provider_login_url 'google' %}">Login with Google</a>
+        </div>
         <div class="signup-link">
             Don't have an account? <a href="/signup">Sign up</a>
         </div>
     </div>
 </body>
-
 </html>

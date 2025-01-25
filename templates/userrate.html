@@ -8,7 +8,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="hero-ct">
-                    <h1>{{ request.user.username }}’s Rated Movies</h1>
+                    <h1>Your Rated Movies</h1>
                     <ul class="breadcumb">
                         <li class="active"><a href="#">Home</a></li>
                         <li> <span class="ion-ios-arrow-right"></span>Rated Movies</li>
@@ -38,7 +38,7 @@
                         <ul>
                             <li><a href="{% url 'user_profile' %}">Profile</a></li>
                             <li><a href="{% url 'user_favorite_grid' %}">Favorite movies</a></li>
-                            <li class="active"><a href="{% url 'user_rate' %}">Rated movies</a></li>
+                            <li><a href="{% url 'user_rate' user_id=request.user.id %}">Your Ratings</a></li>
                         </ul>
                     </div>
                     <div class="user-fav">
@@ -56,13 +56,19 @@
                     {% if rated_movies %}
                         {% for rating in rated_movies %}
                         <div class="user-review">
-                            <div>
+                            <div style="position: relative;">
                                 <a href="{% url 'movie-detail' title=rating.movie.title id=rating.movie.id %}">
                                     <img src="{{ rating.movie.image }}" alt="{{ rating.movie.title }}"
                                          style="width:150px; height:auto; margin-right:10px;">
                                 </a>
-                            </div>
 
+                                {% if rating.user == request.user %}
+                                    <form action="{% url 'delete-rating' id=rating.id %}" method="post" style="position: absolute; top: 5px; right: 5px;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="delete-btn">&times;</button>
+                                    </form>
+                                {% endif %}
+                            </div>
 
                             <p><strong>Rating:</strong> {{ rating.user_rate }}/10</p>
                             <p><strong>Review:</strong> {{ rating.review|default:"No review provided." }}</p>
@@ -85,6 +91,30 @@
     height: 100px;
     border-radius: 50%;
     object-fit: cover;
+}
+
+.delete-btn {
+    background-color: transparent;
+    color: #ff0000;
+    border: none;
+    font-size: 18px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    z-index: 10;
+}
+
+.delete-btn:hover {
+    color: #ff4d4d;
+}
+
+.user-review img {
+    position: relative;
+    display: block;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 .user-review h5 a {

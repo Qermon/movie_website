@@ -47,25 +47,17 @@
                                 <span class="rv">Reviews count {{ movie.review_count }}</span><br>
                                 <span>IMDB Rating: {{ movie.rating2 }}/10</span>
                             </p>
-
                         </div>
 
-                        <!-- Rating Stars -->
                         <div class="rate-star">
                             <p>Rate This Movie: </p>
-                            <i class="ion-ios-star"></i>
-                            <i class="ion-ios-star"></i>
-                            <i class="ion-ios-star"></i>
-                            <i class="ion-ios-star"></i>
-                            <i class="ion-ios-star"></i>
-                            <i class="ion-ios-star"></i>
-                            <i class="ion-ios-star"></i>
-                            <i class="ion-ios-star"></i>
-                            <i class="ion-ios-star-outline"></i>
+                            {% for i in movie.rating|stars_count %}
+                                <i class="ion-ios-star"></i>
+                            {% endfor %}
                         </div>
                     </div>
 
-                    <!-- Movie Tabs (Overview, Reviews, Related Movies) -->
+
                     <div class="movie-tabs">
                         <div class="tabs">
                             <ul class="tab-links tabs-mv">

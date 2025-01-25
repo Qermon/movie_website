@@ -6,72 +6,77 @@
 
 {% load custom_filters %}
 
-
-<!--end of signup form popup-->
-
 <!-- BEGIN | Header -->
-
-<!-- END | Header -->
-
 <div class="hero common-hero">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-12">
-				<div class="hero-ct">
-					<h1> movie listing - list</h1>
-					<ul class="breadcumb">
-						<li class="active"><a href="#">Home</a></li>
-						<li> <span class="ion-ios-arrow-right"></span> movie listing</li>
-					</ul>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="hero-ct">
+                    <h1>Movie Listing - List</h1>
+                    <ul class="breadcumb">
+                        <li class="active"><a href="#">Home</a></li>
+                        <li> <span class="ion-ios-arrow-right"></span> Movie Listing</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+
 <div class="page-single movie_list">
-	<div class="container">
-		<div class="row ipad-width2" style="display: flex;">
-			<div class="col-md-8 col-sm-12 col-xs-12" style="flex: 3;">
-				<div class="movie-list">
-					{% for movie in page_obj %}
-					<div class="movie-item-style-2">
-                    <a href="{% url 'movie-detail' title=movie.title|slugify id=movie.id %}">
-                        <div class="movie-image" style="background-image: url('{{ movie.image }}');"></div>
-                    </a>
+    <div class="container">
+        <div class="row ipad-width2" style="display: flex;">
+            <div class="col-md-8 col-sm-12 col-xs-12" style="flex: 3;">
+                <div class="movie-list">
+                    <div class="topbar-filter">
+                        <form method="get" action="">
+                            <button type="submit" name="sort" value="high_score" class="sort-btn">Sort by Rating (High to Low)</button>
+                            <button type="submit" name="sort" value="low_score" class="sort-btn">Sort by Rating (Low to High)</button>
+                            <button type="submit" name="sort" value="title" class="sort-btn">Sort by Title</button>
+                            <button type="submit" name="sort" value="random" class="sort-btn">Sort by Random</button>
+                        </form>
+                    </div>
 
+                    {% for movie in page_obj %}
+                    <div class="movie-item-style-2">
+                        <a href="{% url 'movie-detail' title=movie.title|slugify id=movie.id %}">
+                            <div class="movie-image" style="background-image: url('{{ movie.image }}');"></div>
+                        </a>
 
-						<div class="mv-item-infor">
-							<h6>
+                        <div class="mv-item-infor">
+                            <h6>
                                 <a href="{% url 'movie-detail' title=movie.title|slugify id=movie.id %}">
                                     {{ movie.title }} <span>({{ movie.release_date }})</span>
                                 </a>
                             </h6>
 
-							<p class="rate"><i class="ion-android-star"></i><span>{{ movie.rating }}</span> /10</p>
-                            <p class="rate"><i class="ion-android-star"></i><span>{{  movie.rating2 }} Imdb</span></p>
-							<p class="describe">{{ movie.description }}</p>
-							<p class="run-time"> Reviews {{ movie.review_count }} <span>Release: {{ movie.release_date }}</span></p>
-                            <p class="run-time"> Actors {{ movie_actor.role }} </p>
-						</div>
-					</div>
-					{% endfor %}
-				</div>
-				<div class="topbar-filter">
-					<div class="pagination">
-						<ul>
-							{% for p in page_obj.paginator.page_range %}
-                                {% if page_obj.number == p %}
-                                <li class="page-num page-num-selected">{{ p }}</li>
-                                {% else %}
-							<li class="page_num">
-								<a href="?page={{ p }}">{{ p }}</a>
-							</li>
-                                {% endif %}
-							{% endfor %}
-						</ul>
-					</div>
-				</div>
-			</div>
+                            <p class="rate"><i class="ion-android-star"></i><span>{{ movie.rating }}</span> /10</p>
+                            <p class="rate"><i class="ion-android-star"></i><span>{{ movie.rating2 }} IMDb</span></p>
+                            <p class="describe">{{ movie.description }}</p>
+                            <p class="run-time">Reviews {{ movie.review_count }} <span>Release: {{ movie.release_date }}</span></p>
+                            <p class="run-time">Actors {{ movie_actor.role }}</p>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+                <div class="topbar-filter">
+                    <div class="pagination">
+                        <ul>
+                            {% for p in page_obj.paginator.page_range %}
+                            {% if page_obj.number == p %}
+                            <li class="page-num page-num-selected">{{ p }}</li>
+                            {% else %}
+                            <li class="page_num">
+                                <a href="?page={{ p }}">{{ p }}</a>
+                            </li>
+                            {% endif %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
             <div class="col-md-4 col-sm-12 col-xs-12" style="flex: 1;">
                 <div class="sidebar">
                     <div class="search-form">
@@ -80,26 +85,21 @@
                             <div class="row">
                                 <div class="col-md-12 form-it">
                                     <label>Movie name</label>
-                                    <input type="text" name="search" placeholder="Enter keywords"
-                                           value="{{ request.GET.search }}">
+                                    <input type="text" name="search" placeholder="Enter keywords" value="{{ request.GET.search }}">
                                 </div>
                                 <div class="col-md-12 form-it">
                                     <label>Genre</label>
                                     <select name="genre" class="form-control">
                                         <option value="">Select Genre</option>
                                         {% for genre in genres %}
-                                            <option value="{{ genre }}"
-                                                    {% if request.GET.genre == genre %}selected{% endif %}>{{ genre }}</option>
+                                        <option value="{{ genre }}" {% if request.GET.genre == genre %}selected{% endif %}>{{ genre }}</option>
                                         {% endfor %}
                                     </select>
-
                                 </div>
                                 <div class="col-md-12 form-it">
                                     <label>Rating Range</label>
-                                    <input type="number" name="rating_min" placeholder="Min"
-                                           value="{{ request.GET.rating_min }}">
-                                    <input type="number" name="rating_max" placeholder="Max"
-                                           value="{{ request.GET.rating_max }}">
+                                    <input type="number" name="rating_min" placeholder="Min" value="{{ request.GET.rating_min }}">
+                                    <input type="number" name="rating_max" placeholder="Max" value="{{ request.GET.rating_max }}">
                                 </div>
                                 <div class="col-md-12 form-it">
                                     <label>Release Year</label>
@@ -118,73 +118,89 @@
 </div>
 
 <title>Movie List</title>
+
 <style>
-	.pagination ul {
-		list-style-type: none;
-		padding: 0;
-		display: flex;
-		gap: 5px;
-	}
+    .pagination ul {
+        list-style-type: none;
+        padding: 0;
+        display: flex;
+        gap: 5px;
+    }
 
-	.pagination li {
-		display: inline;
-	}
+    .pagination li {
+        display: inline;
+    }
 
-	.movie-item-style-2 {
-		display: flex;
-		margin-bottom: 20px;
-	}
+    .movie-item-style-2 {
+        display: flex;
+        margin-bottom: 20px;
+    }
 
-	.movie-item-style-2 img {
-		margin-right: 10px;
-	}
+    .movie-item-style-2 img {
+        margin-right: 10px;
+    }
 
-	.mv-item-infor {
-		display: flex;
-		flex-direction: column;
-	}
+    .mv-item-infor {
+        display: flex;
+        flex-direction: column;
+    }
 
-	.topbar-filter {
-		margin-bottom: 20px;
-	}
+    .topbar-filter {
+        margin-bottom: 20px;
+    }
+
     .page-num {
-    display: inline-block;
-    margin: 0 5px;
-    padding: 8px 16px;
-    color: #000;
-    text-decoration: none;
-}
+        display: inline-block;
+        margin: 0 5px;
+        padding: 8px 16px;
+        color: #000;
+        text-decoration: none;
+    }
 
-.page-num-selected {
-    display: inline-block;
-    margin: 0 5px;
-    padding: 8px 16px;
-    color: #fff;
-    background-color: #007bff;
-    border-radius: 4px;
-    text-decoration: none;
-}
+    .page-num-selected {
+        display: inline-block;
+        margin: 0 5px;
+        padding: 8px 16px;
+        color: #fff;
+        background-color: #007bff;
+        border-radius: 4px;
+        text-decoration: none;
+    }
 
-.page_num a {
-    display: inline-block;
-    margin: 0 5px;
-    padding: 8px 16px;
-    color: #007bff;
-    text-decoration: none;
-}
+    .page_num a {
+        display: inline-block;
+        margin: 0 5px;
+        padding: 8px 16px;
+        color: #007bff;
+        text-decoration: none;
+    }
 
-.page_num a:hover {
-    background-color: #e9ecef;
-    border-radius: 4px;
-}
-.movie-image {
-    width: 150px;
-    height: 200px;
-    background-size: cover;
-    background-position: center;
-    margin-right: 20px;
-}
+    .page_num a:hover {
+        background-color: #e9ecef;
+        border-radius: 4px;
+    }
 
+    .movie-image {
+        width: 150px;
+        height: 200px;
+        background-size: cover;
+        background-position: center;
+        margin-right: 20px;
+    }
+
+    .sort-btn {
+        background-color: #007bff;
+        color: #fff;
+        border: none;
+        padding: 10px 20px;
+        margin: 5px;
+        cursor: pointer;
+        border-radius: 4px;
+    }
+
+    .sort-btn:hover {
+        background-color: #0056b3;
+    }
 </style>
 
 <!-- footer section-->

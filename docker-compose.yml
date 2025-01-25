@@ -1,0 +1,57 @@
+version: "3.9"
+
+services:
+  redis:
+    image: redis:6.2-alpine
+
+  film_project:
+    build:
+      dockerfile: Dockerfile
+      context: .
+    image: filmwebsite_django:latest
+    container_name: filmwebsite_django
+    command: >
+      sh -c "python manage.py runserver 0.0.0.0:8000"
+    depends_on:
+      - redis
+    volumes:
+      - .:/filmwebsite
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+
+  celery:
+    container_name: celery
+    build:
+      dockerfile: Dockerfile
+      context: .
+    command: celery -A djangoProject worker --loglevel=info
+    volumes:
+      - .:/filmwebsite
+    depends_on:
+      - film_project
+
+  celery_beat:
+    container_name: celery_beat
+    build:
+      dockerfile: Dockerfile
+      context: .
+    command: celery -A djangoProject beat --loglevel=info
+    volumes:
+      - .:/filmwebsite
+    depends_on:
+      - film_project
+
+  flower:
+    container_name: flower
+    build:
+      dockerfile: Dockerfile
+      context: .
+    ports:
+      - "5555:5555"
+    command: celery -A djangoProject flower
+    volumes:
+      - .:/filmwebsite
+    depends_on:
+      - celery

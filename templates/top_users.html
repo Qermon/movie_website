@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<div class="hero user-hero">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="hero-ct">
+                    <h1>Top 25 Users by Number of Comments</h1>
+                    <ul class="breadcumb">
+                        <li class="active"><a href="/">Home</a></li>
+                        <li><span class="ion-ios-arrow-right"></span>Top Users</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="page-single">
+    <div class="container">
+        <div class="row ipad-width">
+            <div class="col-md-12">
+                <div id="top-users-list" class="tab">
+                    <h4>Top 25 Users</h4>
+                    {% if top_users %}
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Rank</th>
+                                    <th>User</th>
+                                    <th>Number of Comments</th>
+                                    <th>Average Rating</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user_profile in top_users %}
+                                <tr>
+                                    <td>{{ forloop.counter }}</td>
+                                     <td><a href="{% url 'user_rate' user_profile.user.id %}">{{ user_profile.user.username }}</a></td>
+                                    <td>{{ user_profile.num_comments }}</td>
+                                    <td>
+                                        {% if user_profile.avg_rating %}
+                                            {{ user_profile.avg_rating }}
+                                        {% else %}
+                                            No Rating
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <p>No users have commented yet.</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .hero {
+        background-color: #f8f9fa;
+        padding: 30px 0;
+    }
+
+    .hero-ct h1 {
+        font-size: 36px;
+        font-weight: bold;
+        color: #333;
+    }
+
+    .breadcumb {
+        list-style-type: none;
+        padding: 0;
+        margin: 0;
+        font-size: 14px;
+    }
+
+    .breadcumb li {
+        display: inline;
+        margin-right: 10px;
+    }
+
+    .breadcumb li a {
+        color: #007bff;
+        text-decoration: none;
+    }
+
+    .breadcumb li.active a {
+        color: #333;
+        font-weight: bold;
+    }
+
+    #top-users-list {
+        margin-top: 20px;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    .table th, .table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid #ddd;
+        background-color: white;
+    }
+
+    .table th {
+        background-color: #007bff;
+        color: white;
+    }
+
+    .table tr:hover {
+        background-color: #f1f1f1;
+    }
+</style>
+
+{% endblock %}

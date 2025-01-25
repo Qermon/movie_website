@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>Not</h1>
+<ul>
+    {% for notification in notifications %}
+        <li>
+            {{ notification.message }} - {{ notification.created_at|date:"d M Y, H:i" }}
+        </li>
+    {% empty %}
+        <p>У вас нет новых уведомлений.</p>
+    {% endfor %}
+</ul>
+{% endblock %}

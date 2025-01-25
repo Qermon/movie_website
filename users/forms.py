@@ -50,5 +50,18 @@ class RegisterFormUser(forms.ModelForm):
         return cleaned_data
 
 
+class UserPasswordChangeForm(PasswordChangeForm):
+    old_password = forms.CharField(
+        label='Old password',
+        widget=forms.PasswordInput(attrs={'class': 'form-control'})
+    )
+    new_password1 = forms.CharField(
+        label='New password',
+        widget=forms.PasswordInput(attrs={'class': 'form-control'})
+    )
+    new_password2 = forms.CharField(
+        label='Confirm password',
+        widget=forms.PasswordInput(attrs={'class': 'form-control'})
+    )
 
 

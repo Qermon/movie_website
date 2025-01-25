@@ -1,15 +1,13 @@
-<!DOCTYPE html>
 {% extends 'base.html' %}
 {% load static %}
-<!-- END | Header -->
-{% block content %}
 
+{% block content %}
 <div class="hero user-hero">
     <div class="container">
         <div class="row">
             <div class="col-md-12">
                 <div class="hero-ct">
-                    <h1>{{ user.username }}’s Profile</h1>
+                    <h1>Your Favorite Movies</h1>
                     <ul class="breadcumb">
                         <li class="active"><a href="#">Home</a></li>
                         <li><span class="ion-ios-arrow-right"></span>Favorite movies</li>
@@ -26,22 +24,14 @@
             <div class="col-md-3 col-sm-12 col-xs-12">
                 <div class="user-information">
                     <div class="user-img">
-                        <img src="
-                                
-                                {% if request.user.profile.avatar %}{{ request.user.profile.avatar.url }}{% else %}{% static 'images/uploads/user-img.png' %}{% endif %}"
-                             alt="Current Avatar" class="current-avatar circular-avatar">
-
-                        <form method="post" action="{% url 'change_avatar' %}" enctype="multipart/form-data">
-                            {% csrf_token %}
-
-                        </form>
+                        <img src="{% if request.user.profile.avatar %}{{ request.user.profile.avatar.url }}{% else %}{% static 'images/uploads/user-img.png' %}{% endif %}" alt="Current Avatar" class="current-avatar circular-avatar">
                     </div>
                     <div class="user-fav">
                         <p>Account Details</p>
                         <ul>
                             <li><a href={% url 'user_profile' %}>Profile</a></li>
                             <li class="active"><a href={% url 'user_favorite_grid' %}>Favorite movies</a></li>
-                            <li><a href="{% url 'user_rate' %}">Rated movies</a></li>
+                            <li><a href="{% url 'user_rate' user_id=request.user.id %}">Your Ratings</a></li>
                         </ul>
                     </div>
                     <div class="user-fav">
@@ -64,6 +54,12 @@
                                         <img src="{{ movie.image }}" alt="{{ movie.title }}" class="img-fluid">
                                     </a>
                                     <h5 class="movie-title">{{ movie.title }}</h5>
+                                    <form method="POST" action="{% url 'delete_favorite_movie' movie.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="delete-btn">
+                                            &#10006;
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         {% empty %}
@@ -82,6 +78,12 @@
                                         <img src="{{ actor.image_actors }}" alt="{{ actor.actor_names }}" class="img-fluid">
                                     </a>
                                     <h5 class="actor-name">{{ actor.actor_names }}</h5>
+                                    <form method="POST" action="{% url 'delete_favorite_actor' actor.id %}">
+                                        {% csrf_token %}
+                                        <button type="submit" class="delete-btn">
+                                            &#10006;
+                                        </button>
+                                    </form>
                                 </div>
                             </div>
                         {% empty %}
@@ -94,6 +96,18 @@
     </div>
 </div>
 
-<!-- footer section-->
+<style>
+    .delete-btn {
+        font-size: 20px;
+        color: red;
+        cursor: pointer;
+        border: none;
+        background: none;
+    }
+
+    .delete-btn:hover {
+        color: darkred;
+    }
+</style>
+
 {% endblock %}
-</html>
