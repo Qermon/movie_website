@@ -31,8 +31,6 @@ services:
       - .:/filmwebsite
     depends_on:
       - film_project
-    env_file:
-      - .env
 
   celery_beat:
     container_name: celery_beat
