@@ -29,7 +29,6 @@ class Movies(models.Model):
     directors = models.CharField(max_length=255, null=True, blank=True)
     writers = models.CharField(max_length=255, default='Unknown', blank=True)
     duration = models.CharField(max_length=255, null=True, blank=True)
-
     movie_actors = models.ManyToManyField(Actors, through='MovieActor', related_name='movies')
     genre = models.CharField(max_length=255, blank=True)
 

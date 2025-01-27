@@ -3,8 +3,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from django.core.cache import cache
 from django.core.paginator import Paginator
-from django.db.models import Count, Avg, F
-from django.http import HttpResponseForbidden
+from django.db.models import Count, Avg
 from django.shortcuts import get_object_or_404, redirect
 from django.template.defaultfilters import slugify
 from django.views.generic import ListView, DetailView, TemplateView
