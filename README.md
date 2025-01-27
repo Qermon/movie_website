@@ -44,5 +44,5 @@ bash
 4) (Optional) Google registration on the website. In file .env add client_id and secret
    Example:
    SECRET_KEY = '123'
-   cliend_id = 'your client_id'
+   client_id = 'your client_id'
    secret = 'your secret'
