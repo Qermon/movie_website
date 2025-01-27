@@ -5,6 +5,7 @@ Users can leave ratings, manage favorite lists, view rating movies, and explore 
 The project includes several additional features such as caching, pagination, user authentication with Google, 
 Celery task management for background operations, parsing films and actors into the database, tests, and Docker to simplify set-up.
 
+
 ---
 
 ## Site Functionality:
