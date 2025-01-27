@@ -18,8 +18,8 @@ services:
       - .:/filmwebsite
     ports:
       - "8000:8000"
-    environment:
-      - PYTHONUNBUFFERED=1
+    env_file:
+      - .env
 
   celery:
     container_name: celery
@@ -31,6 +31,8 @@ services:
       - .:/filmwebsite
     depends_on:
       - film_project
+    env_file:
+      - .env
 
   celery_beat:
     container_name: celery_beat
@@ -42,6 +44,8 @@ services:
       - .:/filmwebsite
     depends_on:
       - film_project
+    env_file:
+      - .env
 
   flower:
     container_name: flower
@@ -55,3 +59,5 @@ services:
       - .:/filmwebsite
     depends_on:
       - celery
+    env_file:
+      - .env
