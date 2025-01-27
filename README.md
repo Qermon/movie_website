@@ -35,6 +35,7 @@ Celery task management for background operations, parsing films and actors into 
 - ... 
 
 ---
+
 ## Set-Up
 bash
 1) git clone https://github.com/Qermon/movie_website.git or get from version control
