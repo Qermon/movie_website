@@ -39,10 +39,10 @@ Celery task management for background operations, parsing films and actors into 
 bash
 1) git clone https://github.com/Qermon/movie_website.git or get from version control
 2) In the root folder of the movie_website project you need to create a .env file and add SECRET_KEY with any code there
-   Example: SECRET_KEY = '123'
+   Example: SECRET_KEY = 123
 3) docker-compose up --build
 4) (Optional) Google registration on the website. In file .env add client_id and secret
    Example:
-   SECRET_KEY = '123'
-   client_id = 'your client_id'
-   secret = 'your secret'
+   SECRET_KEY = 123
+   client_id = your client_id
+   secret = your secret
