@@ -31,12 +31,13 @@ Celery task management for background operations, parsing films and actors into 
 - **Selenium**
 - **BeautifulSoup**
 - **Flower**
+- **JS, HTML, CSS(taken from the internet)**
 - ... 
 
 ---
 ## Set-Up
 bash
-1) git clone https://github.com/Qermon/movie_website.git
+1) git clone https://github.com/Qermon/movie_website.git or get from version control
 2) In the root folder of the movie_website project you need to create a .env file and add SECRET_KEY with any code there
    Example: SECRET_KEY = '123'
 3) docker-compose up --build
